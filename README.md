@@ -1,4 +1,4 @@
-# Composer plugin for increment a package version
+# Bump plugin
 
 ## Install
 ```bash
