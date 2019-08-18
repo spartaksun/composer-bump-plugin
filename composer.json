@@ -2,6 +2,7 @@
   "name": "spartaksun/composer-bump-plugin",
   "version": "0.1.3",
   "description": "Composer plugin for incremention a package version.",
+  "keywords": ["composer", "version", "bump", "plugin", "semver"],
   "type": "composer-plugin",
   "license": "MIT",
   "authors": [
