@@ -1,0 +1,17 @@
+{
+    "name": "spartaksun/composer-bump-plugin",
+    "description": "Composer plugin for increasing package version",
+    "type": "composer-plugin",
+    "require": {
+        "symfony/console": "^4.3",
+        "composer-plugin-api": "^1.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Belyakovskiy",
+            "email": "2697024@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
