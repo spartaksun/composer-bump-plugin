@@ -1,5 +1,6 @@
 {
     "name": "spartaksun/composer-bump-plugin",
+    "version": "0.0.1",
     "description": "Composer plugin for increasing package version",
     "type": "composer-plugin",
     "require": {
