@@ -74,6 +74,9 @@ final class Bumper {
       case 'major':
         $this->newVersion = $this->bumpMajor($this->oldVersion)->getVersion();
         break;
+      case 'restore':
+        $this->fileHelper->restoreBackupFile();
+        break;
       default:
         $this->newVersion = $this->bumpPatch($this->oldVersion)->getVersion();
     }
