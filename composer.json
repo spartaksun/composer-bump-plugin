@@ -1,26 +1,28 @@
 {
-    "name": "spartaksun/composer-bump-plugin",
-    "version": "0.0.1",
-    "description": "Composer plugin for increasing package version",
-    "type": "composer-plugin",
-    "require": {
-        "composer-plugin-api": "^1.1",
-        "composer/composer": "^1.9"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Alexey Belyakovskiy",
-            "email": "2697024@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "extra": {
-        "class": "Spartaksun\\ComposerBumpPlugin"
-    },
-    "autoload": {
-        "psr-4": {
-            "Spartaksun\\": "src"
-        }
+  "name": "spartaksun/composer-bump-plugin",
+  "version": "0.1.0",
+  "description": "Composer plugin for incremention a package version.",
+  "type": "composer-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexey Belyakovsky",
+      "email": "2697024@gmail.com"
     }
+  ],
+  "require": {
+    "composer-plugin-api": "^1.1",
+    "composer/composer": "^1.9",
+    "ext-json": "*",
+    "php": ">=7.1"
+  },
+  "minimum-stability": "stable",
+  "extra": {
+    "class": "Spartaksun\\ComposerBumpPlugin\\ComposerBumpPlugin"
+  },
+  "autoload": {
+    "psr-4": {
+      "Spartaksun\\ComposerBumpPlugin\\": "src"
+    }
+  }
 }
