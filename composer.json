@@ -3,8 +3,8 @@
     "description": "Composer plugin for increasing package version",
     "type": "composer-plugin",
     "require": {
-        "symfony/console": "^4.3",
-        "composer-plugin-api": "^1.1"
+        "composer-plugin-api": "^1.1",
+        "composer/composer": "^1.9"
     },
     "license": "MIT",
     "authors": [
@@ -13,5 +13,13 @@
             "email": "2697024@gmail.com"
         }
     ],
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "class": "Spartaksun\\ComposerBumpPlugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spartaksun\\": "src"
+        }
+    }
 }
