@@ -1,4 +1,4 @@
-# Composer plugin for incremention a package version
+# Composer plugin for increment a package version
 
 ## Install
 ```bash
