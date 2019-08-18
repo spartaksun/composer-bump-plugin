@@ -1,6 +1,6 @@
 {
   "name": "spartaksun/composer-bump-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Composer plugin for incremention a package version.",
   "type": "composer-plugin",
   "license": "MIT",
