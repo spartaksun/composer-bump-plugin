@@ -3,8 +3,6 @@
 namespace Spartaksun\ComposerBumpPlugin;
 
 
-use Exception;
-
 final class FileHelper {
 
   /**
@@ -38,9 +36,9 @@ final class FileHelper {
    * @param        $indentSize
    * @param string $newLine
    * @param bool   $doBackup
-   * @throws Exception
+   * @throws BumperException
    */
-  public function __construct($filePath, $indentSize, $newLine = \PHP_EOL, $doBackup = true) {
+  public function __construct($filePath, $indentSize, $newLine = PHP_EOL, $doBackup = true) {
 
     $this->printer = new JsonPrinter(str_repeat(' ', $indentSize), $newLine);
     $this->doBackup = $doBackup;
@@ -48,31 +46,28 @@ final class FileHelper {
     $this->composerFilePathBackup = $filePath.'-backup';
 
     $this->readFile();
-
-    return $this;
-
   }
 
   /**
    * @return $this
-   * @throws Exception
+   * @throws BumperException
    */
-  private function readFile() {
+  private function readFile(): self {
     if (!file_exists($this->composerFilePath)) {
-      throw new Exception("File not found: ".$this->composerFilePath, 1);
+      throw new BumperException("File not found: ".$this->composerFilePath, 1);
     }
 
     $fileContent = file_get_contents($this->composerFilePath);
     $this->composerFileContent = json_decode($fileContent, true);
 
     if (is_null($this->composerFileContent) || !is_array($this->composerFileContent)) {
-      throw new Exception("Error in decoding JSON file with description: ".$this->getJsonError(), 1);
+      throw new BumperException("Error in decoding JSON file with description: ".$this->getJsonError(), 1);
     }
 
     return $this;
   }
 
-  public function getJsonError() {
+  public function getJsonError(): string {
     switch (json_last_error()) {
       case JSON_ERROR_NONE:
         return ' - No errors';
@@ -96,10 +91,9 @@ final class FileHelper {
         return ' - Unknown error';
         break;
     }
-
   }
 
-  public function getVersion() {
+  public function getVersion(): ?string {
 
     if (array_key_exists('version', $this->composerFileContent)) {
       return $this->composerFileContent['version'];
@@ -108,7 +102,7 @@ final class FileHelper {
     return null;
   }
 
-  public function setVersion($version) {
+  public function setVersion($version): self {
     $this->composerFileContent['version'] = $version;
 
     return $this;
@@ -116,22 +110,22 @@ final class FileHelper {
 
   /**
    * @return FileHelper
-   * @throws Exception
+   * @throws BumperException
    */
-  public function save() {
+  public function save(): FileHelper {
     return $this->writeFile();
   }
 
   /**
    * @return $this
-   * @throws Exception
+   * @throws BumperException
    */
-  public function writeFile() {
+  public function writeFile(): FileHelper {
     if ($this->doBackup) {
       $this->createBackupFile();
     }
 
-    $data = $this->printer->print(json_encode(
+    $data = $this->printer->toJson(json_encode(
       $this->composerFileContent, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
     ));
     file_put_contents($this->composerFilePath, $data);
@@ -141,32 +135,30 @@ final class FileHelper {
 
   /**
    * @return bool
-   * @throws Exception
+   * @throws BumperException
    */
-  public function createBackupFile() {
+  public function createBackupFile(): bool {
 
     if (!copy($this->composerFilePath, $this->composerFilePathBackup)) {
-      throw new Exception('Unable to make backup copy of the file: composer.json');
+      throw new BumperException('Unable to make backup copy of the file: composer.json');
     }
 
     return true;
-
   }
 
-  public function getContents() {
+  public function getContents(): ?array {
     return $this->composerFileContent;
   }
 
   /**
    * @return bool
-   * @throws Exception
+   * @throws BumperException
    */
   public function restoreBackupFile() {
     if (!copy($this->composerFilePathBackup, $this->composerFilePath)) {
-      throw new Exception('Unable to restore the backup file: composer.json-backup');
+      throw new BumperException('Unable to restore the backup file: composer.json-backup');
     }
 
     return true;
   }
-
 }

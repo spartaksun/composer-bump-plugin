@@ -1,8 +1,11 @@
 <?php declare(strict_types=1);
 
-
 namespace Spartaksun\ComposerBumpPlugin;
 
+
+use InvalidArgumentException;
+use const JSON_ERROR_NONE;
+use const PHP_EOL;
 
 final class JsonPrinter {
 
@@ -21,32 +24,36 @@ final class JsonPrinter {
    * @param string $indentation
    * @param string $newLine
    */
-  public function __construct(string $indentation = '  ', string $newLine = \PHP_EOL) {
+  public function __construct(string $indentation = '  ', string $newLine = PHP_EOL) {
     $this->indentation = $indentation;
     $this->newLine = $newLine;
   }
 
-
-  public function print(string $json): string {
+  /**
+   * @param string $json
+   * @return string
+   * @throws BumperException
+   */
+  public function toJson(string $json): string {
     $indentation = $this->indentation;
     $newLine = $this->newLine;
 
-    if (null === \json_decode($json) && \JSON_ERROR_NONE !== \json_last_error()) {
-      throw new \InvalidArgumentException(\sprintf(
+    if ((null === json_decode($json)) && (JSON_ERROR_NONE !== json_last_error())) {
+      throw new BumperException(sprintf(
         '"%s" is not valid JSON.',
         $json
       ));
     }
 
-    if (1 !== \preg_match('/^( +|\t+)$/', $indentation)) {
-      throw new \InvalidArgumentException(\sprintf(
+    if (1 !== preg_match('/^( +|\t+)$/', $indentation)) {
+      throw new BumperException(sprintf(
         '"%s" is not a valid indent.',
         $indentation
       ));
     }
 
-    if (1 !== \preg_match('/^(?>\r\n|\n|\r)$/', $newLine)) {
-      throw new \InvalidArgumentException(\sprintf(
+    if (1 !== preg_match('/^(?>\r\n|\n|\r)$/', $newLine)) {
+      throw new InvalidArgumentException(sprintf(
         '"%s" is not a valid new-line character sequence.',
         $newLine
       ));
@@ -54,7 +61,7 @@ final class JsonPrinter {
 
     $printed = '';
     $indentLevel = 0;
-    $length = \strlen($json);
+    $length = strlen($json);
     $withinStringLiteral = false;
     $stringLiteral = '';
     $noEscape = true;
@@ -63,7 +70,7 @@ final class JsonPrinter {
       /**
        * Grab the next character in the string.
        */
-      $character = \substr($json, $i, 1);
+      $character = substr($json, $i, 1);
 
       /**
        * Are we inside a quoted string literal?
@@ -95,7 +102,7 @@ final class JsonPrinter {
       /**
        * Ignore whitespace outside of string literal.
        */
-      if ('' === \trim($character)) {
+      if ('' === trim($character)) {
         continue;
       }
 
@@ -112,7 +119,7 @@ final class JsonPrinter {
        * Output a new line after "," character and and indent the next line.
        */
       if (',' === $character) {
-        $printed .= $character.$newLine.\str_repeat($indentation, $indentLevel);
+        $printed .= $character.$newLine.str_repeat($indentation, $indentLevel);
 
         continue;
       }
@@ -123,7 +130,7 @@ final class JsonPrinter {
       if ('{' === $character || '[' === $character) {
         ++$indentLevel;
 
-        $printed .= $character.$newLine.\str_repeat($indentation, $indentLevel);
+        $printed .= $character.$newLine.str_repeat($indentation, $indentLevel);
 
         continue;
       }
@@ -134,8 +141,8 @@ final class JsonPrinter {
       if ('}' === $character || ']' === $character) {
         --$indentLevel;
 
-        $trimmed = \rtrim($printed);
-        $previousNonWhitespaceCharacter = \substr($trimmed, -1);
+        $trimmed = rtrim($printed);
+        $previousNonWhitespaceCharacter = substr($trimmed, -1);
 
         /**
          * Collapse empty {} and [].
@@ -146,7 +153,7 @@ final class JsonPrinter {
           continue;
         }
 
-        $printed .= $newLine.\str_repeat($indentation, $indentLevel);
+        $printed .= $newLine.str_repeat($indentation, $indentLevel);
       }
 
       $printed .= $character;

@@ -1,21 +1,18 @@
 <?php declare(strict_types=1);
 
-
 namespace Spartaksun\ComposerBumpPlugin;
 
-
 use Composer\Command\BaseCommand;
+use Exception as ExceptionAlias;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class BumpCommand extends BaseCommand {
-
-
   private $defaultIndent = 2;
 
-  protected function configure() {
+  protected function configure(): void {
     $this->setName('bump')
          ->addArgument(
            'part',
@@ -41,9 +38,9 @@ final class BumpCommand extends BaseCommand {
    * @param InputInterface  $input
    * @param OutputInterface $output
    * @return int|void|null
-   * @throws \Exception
+   * @throws ExceptionAlias
    */
-  protected function execute(InputInterface $input, OutputInterface $output) {
+  protected function execute(InputInterface $input, OutputInterface $output): void {
     $noBackup = $input->getArgument('no-backup');
     $bumper = new Bumper((int)$input->getOption('indent'), !$noBackup);
     $scripts = $bumper->getScripts();
@@ -52,7 +49,6 @@ final class BumpCommand extends BaseCommand {
       exec(sprintf($scripts['pre-bump'].' --old-version %s', $bumper->getOldVersion()), $o);
       $output->writeln(sprintf('<info>Pre bump output:</info>'));
       $this->writeOutput($o, $output);
-
     }
 
     $bumper->bump($input->getArgument('part'));
@@ -72,8 +68,8 @@ final class BumpCommand extends BaseCommand {
     ));
   }
 
-  private function writeOutput($value, OutputInterface $output) {
-    if(is_array($value)) {
+  private function writeOutput($value, OutputInterface $output): void {
+    if (is_array($value)) {
       foreach ($value as $el) {
         $output->writeln($el);
       }

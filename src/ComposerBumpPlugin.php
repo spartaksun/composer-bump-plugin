@@ -10,7 +10,11 @@ use Composer\Plugin\Capable;
 use Composer\Plugin\PluginEvents;
 use Composer\Plugin\PluginInterface;
 
+/**
+ * @noinspection PhpUnused
+ */
 final class ComposerBumpPlugin implements PluginInterface, Capable, EventSubscriberInterface {
+
   /**
    * @var Composer
    */
@@ -25,7 +29,6 @@ final class ComposerBumpPlugin implements PluginInterface, Capable, EventSubscri
     return [
       PluginEvents::PRE_COMMAND_RUN => 'before',
     ];
-
   }
 
   public function activate(Composer $composer, IOInterface $io) {
