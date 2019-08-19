@@ -1,4 +1,4 @@
-# Composer plugin for incremention a package version
+# Bump plugin
 
 ## Install
 ```bash
@@ -8,7 +8,7 @@ composer require-dev spartaksun/composer-bump-plugin
 ## Usage
 After plugin package installed you will be able to call `composer bump` command.
 Without any additional arguments it will increment a patch part of version mentioned in composer.json.
-Command will also create a backup copy of composer.json in composer.json-backup file.
+Command will also create a backup copy of `composer.json` in `composer.json-backup` file.
 
 #### Increment patch part of a version
 
@@ -58,5 +58,6 @@ You may optionally specify callbacks scripts in your `composer.json`:
    }
 }
 ```
-`pre-bump` script will be called before incrementing a version with argument `--old-version`. 
+`pre-bump` script will be called before incrementing a version with argument `--old-version`.
+
 `post-bump` script will be called after version is incremented with arguments `--old-version` and `--new-version` added to your script. 
