@@ -1,4 +1,5 @@
 # Bump plugin
+[![Build Status](https://travis-ci.org/spartaksun/composer-bump-plugin.svg?branch=master)](https://travis-ci.org/spartaksun/composer-bump-plugin)
 
 ## Install
 ```bash
